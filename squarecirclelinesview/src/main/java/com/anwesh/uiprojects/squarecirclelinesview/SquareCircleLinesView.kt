@@ -250,7 +250,7 @@ class SquareCircleLinesView(ctx : Context) : View(ctx) {
         fun create(activity : Activity) : SquareCircleLinesView {
             val view : SquareCircleLinesView = SquareCircleLinesView(activity)
             activity.setContentView(view)
-            return view 
+            return view
         }
     }
 }
