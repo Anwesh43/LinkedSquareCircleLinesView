@@ -244,4 +244,13 @@ class SquareCircleLinesView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : SquareCircleLinesView {
+            val view : SquareCircleLinesView = SquareCircleLinesView(activity)
+            activity.setContentView(view)
+            return view 
+        }
+    }
 }
