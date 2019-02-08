@@ -20,8 +20,8 @@ val scDiv : Double = 0.51
 val sizeFactor : Float = 2.9f
 val strokeFactor : Int = 90
 val circleColor : Int = Color.parseColor("#01579B")
-val lineColor : Int = Color.parseColor("#00C853")
-val sqColor : Int = Color.parseColor("#FFAB00")
+val lineColor : Int = circleColor
+val sqColor : Int = Color.parseColor("#00796B")
 val parts : Int = 2
 val backColor : Int = Color.parseColor("#212121")
 
@@ -69,14 +69,14 @@ fun Canvas.drawSCLNode(i : Int, scale : Float, paint : Paint) {
     val h : Float = height.toFloat()
     val gap : Float = h / (nodes + 1)
     val size : Float = gap / sizeFactor
-    val r : Float = size / 3
+    val r : Float = size / 2
     val lx : Float = size / 2
     paint.strokeWidth = Math.min(w, h) / strokeFactor
     val sc1 : Float = scale.divideScale(0, 2)
     val sc2 : Float = scale.divideScale(1, 2)
     val sc21 : Float = sc2.divideScale(0, 2)
     val sc22 : Float = sc2.divideScale(1, 2)
-    val yGap : Float = (2 * size) / lines
+    val yGap : Float = (2 * size) / (lines + 1)
     save()
     translate(w/2, gap * (i + 1))
     rotate(90f * sc22)
@@ -84,7 +84,7 @@ fun Canvas.drawSCLNode(i : Int, scale : Float, paint : Paint) {
     drawCircle(r * sc1, paint)
     for (j in 0..(lines - 1)) {
         val sc : Float = sc1.divideScale(j, lines)
-        drawBiLine(lx, yGap * j, r * sc, paint)
+        drawBiLine(lx, -size + yGap * (j + 1), r * sc, paint)
     }
     restore()
 }
