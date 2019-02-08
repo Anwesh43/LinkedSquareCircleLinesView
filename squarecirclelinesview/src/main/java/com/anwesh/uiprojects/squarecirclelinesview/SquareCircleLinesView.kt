@@ -22,6 +22,7 @@ val strokeFactor : Int = 90
 val circleColor : Int = Color.parseColor("#01579B")
 val lineColor : Int = Color.parseColor("#00C853")
 val sqColor : Int = Color.parseColor("#FFAB00")
+val parts : Int = 2
 val backColor : Int = Color.parseColor("#212121")
 
 fun Int.inverse() : Float = 1f / this
@@ -32,7 +33,7 @@ fun Float.mirrorValue(a : Int, b : Int) : Float {
     val k : Float = scaleFactor()
     return (1 - k) * a.inverse() + k * b.inverse()
 }
-fun Float.updateValue(dir : Int, a : Int, b : Int) : Float = mirrorValue(a, b) * dir * scGap
+fun Float.updateValue(dir : Float, a : Int, b : Int) : Float = mirrorValue(a, b) * dir * scGap
 
 fun Canvas.drawSquare(size : Float, paint : Paint) {
     paint.color = sqColor
@@ -91,7 +92,7 @@ fun Canvas.drawSCLNode(i : Int, scale : Float, paint : Paint) {
 class SquareCircleLinesView(ctx : Context) : View(ctx) {
 
     private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    
+
     override fun onDraw(canvas : Canvas) {
 
     }
@@ -103,5 +104,25 @@ class SquareCircleLinesView(ctx : Context) : View(ctx) {
             }
         }
         return true
+    }
+
+    data class State(var scale : Float = 0f, var prevScale : Float = 0f, var dir : Float = 0f) {
+
+        fun update(cb : (Float) -> Unit) {
+            scale += scale.updateValue(dir, lines, parts)
+            if (Math.abs(scale - prevScale) > 1) {
+                scale = prevScale + dir
+                dir = 0f
+                prevScale = scale
+                cb(prevScale)
+            }
+        }
+
+        fun startUpdating(cb  : () -> Unit) {
+            if (dir == 0f) {
+                dir = 1f - 2 * prevScale
+                cb()
+            }
+        }
     }
 }
