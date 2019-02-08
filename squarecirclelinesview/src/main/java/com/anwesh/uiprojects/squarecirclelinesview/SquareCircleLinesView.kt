@@ -221,4 +221,26 @@ class SquareCircleLinesView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : SquareCircleLinesView) {
+
+        private val animator : Animator = Animator(view)
+        private val scl : SquareCircleLines = SquareCircleLines(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            scl.draw(canvas, paint)
+            animator.animate {
+                scl.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            scl.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
